@@ -1,6 +1,5 @@
 from flask import Flask
 import os
-import sys
 import pika
 import json
 
