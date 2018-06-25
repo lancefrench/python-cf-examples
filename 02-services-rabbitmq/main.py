@@ -13,6 +13,7 @@ def hello_rabbit():
     vcap_services = json.loads(os.getenv('VCAP_SERVICES'))
     amqp_url = vcap_services['p-rabbitmq'][0]['credentials']['protocols']['amqp']['uri']
 
+    # Publish
     connection = pika.BlockingConnection(pika.URLParameters(amqp_url))
     channel = connection.channel()
     channel.queue_declare(queue='hello')
@@ -20,6 +21,15 @@ def hello_rabbit():
                           routing_key='hello',
                           body='Hello World!')
     connection.close()
+
+    # Consume
+    connection = pika.BlockingConnection(pika.URLParameters(amqp_url))
+    channel = connection.channel()
+    channel.queue_declare('hello')
+    method_frame, header_frame, body = channel.basic_get(queue='hello', no_ack=False)
+    if method_frame:
+        channel.basic_ack(method_frame.delivery_tag)
+
     return 'AMQP URL: ' + str(amqp_url)
 
 
