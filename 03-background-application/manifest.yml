@@ -2,6 +2,7 @@
  applications:
  - name: background-application 
    buildpack: python_buildpack
+   memory: 32M
    no-route: true
    health-check-type: process
    command: python main.py
