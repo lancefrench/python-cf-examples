@@ -3,7 +3,6 @@ import signal
 import time
 import sys
 
-logging.basicConfig(stream=sys.stdout, level="INFO")
 LOGGER = logging.getLogger(__name__)
 
 
@@ -14,6 +13,7 @@ def do_exit(signum, stack):
 
 
 if __name__ == '__main__':
+    logging.basicConfig(stream=sys.stdout, level="INFO")
     signal.signal(signal.SIGTERM, do_exit)
 
     while True:
